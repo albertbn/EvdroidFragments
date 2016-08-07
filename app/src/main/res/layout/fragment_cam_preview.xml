@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="bonebou.diordve.preview.CamPreviewFragment">
+
+    <bonebou.diordve.preview.CamPreviewFrameCallback
+        android:id="@+id/cam_preview"
+        android:layout_width="480px"
+        android:layout_height="640px"
+        android:visibility="visible"
+        />
+
+    <ImageView
+        android:id="@+id/imgview_over_surface"
+        android:layout_width="480px"
+        android:layout_height="640px" />
+
+    <Button
+        android:id="@+id/btn_flash"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:text="@string/TORCH"
+        android:layout_alignParentRight="true"
+        android:onClick="onclick_torch"
+        />
+    <Button
+        android:id="@+id/btn_calibrate"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:text="@string/CALIBRATE"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btn_flash"
+        android:layout_marginTop="20dp"
+        android:onClick="onclick_calibrate"
+        />
+
+    <RelativeLayout
+        android:id="@+id/calibrate_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cam_preview"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        />
+
+    <!--sliders child fragment goes here...-->
+    <Button
+        android:id="@+id/btn_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/BTN_TAKE_PHOTO"
+        android:layout_alignParentBottom="true"
+        android:onClick="onclick_take_photo"
+        android:soundEffectsEnabled="true"
+        />
+
+    <TextView
+        android:id="@+id/tv_rich_poor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/POOR_RICH"
+        android:layout_marginBottom="16dp"
+        android:layout_above="@id/btn_take_photo"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>
