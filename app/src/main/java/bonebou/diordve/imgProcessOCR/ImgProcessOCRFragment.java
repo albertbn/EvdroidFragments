@@ -22,6 +22,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import bonebou.diordve.EvdroidActivity_RollerUpload;
 import bonebou.diordve.R;
 
 public class ImgProcessOCRFragment extends Fragment {
@@ -187,7 +188,11 @@ public class ImgProcessOCRFragment extends Fragment {
 
         if ( self.mListener != null ) {
 
-            String msg = (v.getId()==R.id.btn_ok) ? "OK": "AGAIN";
+            boolean is_ok = v.getId()==R.id.btn_ok;
+            String msg = (is_ok) ? "OK": "AGAIN";
+
+            if ( is_ok ) ((EvdroidActivity_RollerUpload)self.getActivity()).upload_ocr_n_img();
+
             self.mListener.onFragmentInteraction(msg);
         }
     }

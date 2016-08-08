@@ -18,6 +18,7 @@ android {
         }
     }
     sourceSets { main { jni.srcDirs = ['src/main/jni', 'src/main/jni/'] } }
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {

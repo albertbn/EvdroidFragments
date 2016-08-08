@@ -16,10 +16,9 @@ import org.opencv.android.OpenCVLoader;
 import bonebou.diordve.imgProcessOCR.ImgProcessOCRFragment;
 import bonebou.diordve.preview.CamPreviewFragment;
 
-public class EvdroidActivity extends Activity
+public class EvdroidActivity extends EvdroidActivity_RollerUpload
         implements CamPreviewFragment.OnFragmentInteractionListener, ImgProcessOCRFragment.OnFragmentInteractionListener {
 
-    static final String LOG_TAG = "EvdroidActivity";
     final static String ROOT_FOLDER_PATH = Environment.getExternalStorageDirectory().getAbsolutePath(); /* doesn't end with / */;
 
 //  credits:  https://www.shaneenishry.com/blog/2014/08/17/ndk-with-android-studio/ - god save the women and indians - for helping me use existing libs, yep! in jniLibs!!!
@@ -54,7 +53,7 @@ public class EvdroidActivity extends Activity
     private boolean isOcrInited = true;
     public boolean getIsOcrInited(){ return this.isOcrInited; }
 
-    EvdroidActivity self = this;
+    private EvdroidActivity self = this;
 
 //    act launched
     @Override
