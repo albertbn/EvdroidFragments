@@ -48,6 +48,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback, C
 //        Log.i ( LOG_TAG, "on prev frame" );
     }
 
+//    TODO - check when you have time
     private void set_buffer_for_preview_callback(){
 
         Camera.Parameters params = self.mCamera.getParameters();
@@ -68,8 +69,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback, C
                 self.mHolder = surfaceHolder;
                 self.mCamera.setPreviewDisplay(surfaceHolder);
 
-//                self.mCamera.setPreviewCallback(self); /*onPreviewFrame*/
-                self.mCamera.setPreviewCallbackWithBuffer(self); /*onPreviewFrame*/
+                self.mCamera.setPreviewCallback(self); /*onPreviewFrame*/
+//                self.mCamera.setPreviewCallbackWithBuffer(self); /*onPreviewFrame*/
             }
         }
         catch (IOException exception)
@@ -95,8 +96,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback, C
         if ( self.mCamera != null) {
             // Call stopPreview() to stop updating the preview surface.
             self.mCamera.stopPreview();
-//            self.mCamera.setPreviewCallback(null); /*stop onPreviewFrame*/
-            self.mCamera.setPreviewCallbackWithBuffer(null); /*stop onPreviewFrame*/
+            self.mCamera.setPreviewCallback(null); /*stop onPreviewFrame*/
+//            self.mCamera.setPreviewCallbackWithBuffer(null); /*stop onPreviewFrame*/
         }
     }
 
@@ -142,8 +143,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback, C
         if (self.mCamera != null) {
             // Call stopPreview() to stop updating the preview surface.
             self.mCamera.stopPreview();
-//            self.mCamera.setPreviewCallback(null); /*stop onPreviewFrame*/
-            self.mCamera.setPreviewCallbackWithBuffer(null); /*stop onPreviewFrame*/
+            self.mCamera.setPreviewCallback(null); /*stop onPreviewFrame*/
+//            self.mCamera.setPreviewCallbackWithBuffer(null); /*stop onPreviewFrame*/
 
             // Important: Call release() to release the camera for use by other
             // applications. Applications should release the camera immediately

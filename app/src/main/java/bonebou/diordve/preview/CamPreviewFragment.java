@@ -175,8 +175,8 @@ public class CamPreviewFragment extends CamPreviewFragmentSink {
     //    bound in layout xml => get_picture_callback()
     public void onclick_take_photo ( View v ) {
 
-//        super.mCamera.setPreviewCallback(null); /*onPreviewFrame*/
-        super.mCamera.setPreviewCallbackWithBuffer(null); /*onPreviewFrame*/
+        super.mCamera.setPreviewCallback(null); /*onPreviewFrame*/
+//        super.mCamera.setPreviewCallbackWithBuffer(null); /*onPreviewFrame*/
         super.mCamera.takePicture ( self.shutter_callback, null, self.picture_callback ) ;
         Log.i ( LOG_TAG, "onclick_take_photo" );
     }

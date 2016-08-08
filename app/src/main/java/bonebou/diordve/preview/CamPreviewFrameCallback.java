@@ -77,7 +77,6 @@ public class CamPreviewFrameCallback extends CamPreview implements Camera.Previe
         if ( !self.is_processing && (self.isOcrInited || super.activity.getIsOcrInited()) ) {
 
             if(!self.isOcrInited) { self.isOcrInited=true; self.tv_rich_poor.setText ( R.string.POOR_RICH ); }
-
 //        self.test_case_preview_bytes(bytes, camera);
 
 //            object_detect_params odp = new object_detect_params(
@@ -87,7 +86,7 @@ public class CamPreviewFrameCallback extends CamPreview implements Camera.Previe
 //            new CameraPreview_objectDetect().execute (odp);
 
             self.object_detect(self.calibrate_fragment.get_hsv_from_sliders(), bytes);
-            camera.addCallbackBuffer(bytes);
+//            camera.addCallbackBuffer(bytes); /*TODO - check some day*/
         }
         else if ( !self.isOcrInited ){ self.tv_rich_poor.setText ( R.string.POOR_RICH_OCR_INIT ); }
 
