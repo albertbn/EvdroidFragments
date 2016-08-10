@@ -9,12 +9,15 @@
         android:layout_width="480px"
         android:layout_height="640px"
         android:visibility="visible"
+        android:layout_alignParentLeft="true"
         />
 
     <ImageView
         android:id="@+id/imgview_over_surface"
         android:layout_width="480px"
-        android:layout_height="640px" />
+        android:layout_height="640px"
+        android:layout_alignParentLeft="true"
+        />
 
     <Button
         android:id="@+id/btn_flash"
