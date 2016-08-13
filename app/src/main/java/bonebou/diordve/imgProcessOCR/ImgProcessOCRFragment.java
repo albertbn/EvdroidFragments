@@ -44,6 +44,8 @@ public class ImgProcessOCRFragment extends Fragment {
     byte[] bytes;
 
     OnFragmentInteractionListener mListener;
+    ImgProcessOCR_processPic task;
+
     ImgProcessOCRFragment self = this;
 
     public ImgProcessOCRFragment() {
@@ -95,7 +97,8 @@ public class ImgProcessOCRFragment extends Fragment {
             self.tv_dump.setText ( "bytes gotten::" + self.bytes.length );
 //            self.set_img_from_bytes();
             // pic
-            new ImgProcessOCR_processPic().execute ( self.bytes );
+            self.task = new ImgProcessOCR_processPic();
+            self.task.execute ( self.bytes );
             self.tv_dump.setText ( "" );
         }
 
@@ -126,14 +129,19 @@ public class ImgProcessOCRFragment extends Fragment {
                 if ( txt.contains("RESET_CLEAR_IMG")  )
 //                    self.imgview_result.setImageURI(Uri.parse(IMG_CAPTURE_PATH+"?time=fuck"));
                     Log.i(LOG_TAG, "RESET_CLEAR_IMG");
-                else if ( txt.contains("DISPLAY_IMG") )
+                else if ( txt.contains("DISPLAY_IMG") ) {
                     self.imgview_result.setImageURI(Uri.parse(IMG_CAPTURE_PATH));
+                    Log.i(LOG_TAG, "DISPLAY_IMG");
+                }
                 else if ( txt.contains("CCLLEEAARR") ) {
                     self.tv_dump.setText ( "" );
+                    Log.i(LOG_TAG, "CCLLEEAARR");
                 }
-                else
+                else {
                     // self.tv.append ( txt + "\n" );
-                    self.tv_dump.append ( txt );
+                    self.tv_dump.append(txt);
+                    Log.i ( LOG_TAG, txt );
+                }
             }
 
         } );
@@ -151,6 +159,8 @@ public class ImgProcessOCRFragment extends Fragment {
         @Override
         protected String doInBackground ( byte[]... params ) {
 
+            Log.i ( LOG_TAG, "do in bg start" );
+
             self.messageMe("RESET_CLEAR_IMG");
             // this.publishProgress(1);
             byte[] data = params[0];
@@ -162,8 +172,10 @@ public class ImgProcessOCRFragment extends Fragment {
             Utils.bitmapToMat ( bmp, mat ); bmp.recycle();
             Imgproc.cvtColor ( mat, mat, Imgproc.COLOR_RGB2BGR );
 
+            Log.i ( LOG_TAG, "calling save middle class native :: " + Long.toString(data.length) );
             // JNI native call
             self.saveMiddleClass ( ROOT_FOLDER_PATH /*static*/, PHOTO_PREFIX, mat.getNativeObjAddr() ) ;
+            Log.i ( LOG_TAG, "got back from save middle native 2493vj vdvj df" );
             mat.release();
 
             return null;
@@ -187,6 +199,11 @@ public class ImgProcessOCRFragment extends Fragment {
         self.check_interface();
 
         if ( self.mListener != null ) {
+
+            if ( self.task !=null && !self.task.isCancelled() ) {
+                Log.i(LOG_TAG, "~~~~~~~~~~~~~~canceling self.task~~~~~~~~~~~");
+                self.task.cancel(true);
+            }
 
             boolean is_ok = v.getId()==R.id.btn_ok;
             String msg = (is_ok) ? "OK": "AGAIN";
