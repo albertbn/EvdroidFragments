@@ -175,7 +175,7 @@ public class ImgProcessOCRFragment extends Fragment {
             Log.i ( LOG_TAG, "calling save middle class native :: " + Long.toString(data.length) );
             // JNI native call
             self.saveMiddleClass ( ROOT_FOLDER_PATH /*static*/, PHOTO_PREFIX, mat.getNativeObjAddr() ) ;
-            Log.i ( LOG_TAG, "got back from save middle native 2493vj vdvj df" );
+            Log.i ( LOG_TAG, "got back from save middle native fork" );
             mat.release();
 
             return null;
