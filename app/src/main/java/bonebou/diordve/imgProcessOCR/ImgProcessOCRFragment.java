@@ -28,6 +28,7 @@ import bonebou.diordve.R;
 public class ImgProcessOCRFragment extends Fragment {
 
     public native boolean saveMiddleClass ( String root_folder_path, String img_unique_no_ext, long inputImage );  /*!not Boolean!!!*/
+    public native boolean terminateOcrRecognition( );
 
     final static String PHOTO_PREFIX = "smc"; /*prefix of the high resolution photo/picture taken*/
     final static String ROOT_FOLDER_PATH = Environment.getExternalStorageDirectory().getAbsolutePath(); /* doesn't end with / */
@@ -194,6 +195,7 @@ public class ImgProcessOCRFragment extends Fragment {
     }
 
     //=================
+    // red or green (OK, come again buttons click )
     public void onclick_img_process ( View v ) {
 
         self.check_interface();
@@ -201,9 +203,13 @@ public class ImgProcessOCRFragment extends Fragment {
         if ( self.mListener != null ) {
 
             if ( self.task !=null && !self.task.isCancelled() ) {
-                Log.i(LOG_TAG, "~~~~~~~~~~~~~~canceling self.task~~~~~~~~~~~");
+
+                Log.i ( LOG_TAG, "~~~~~~~~~~~~~~canceling self.task~~~~~~~~~~~" );
                 self.task.cancel(true);
             }
+
+            // native call to terminate (heavy) OCR recognition
+            terminateOcrRecognition();
 
             boolean is_ok = v.getId()==R.id.btn_ok;
             String msg = (is_ok) ? "OK": "AGAIN";
