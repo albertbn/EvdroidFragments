@@ -7,7 +7,7 @@
     <string name="TXT_DEFAULT">middle class is currently fucked</string>
 
     <string name="TORCH">torch</string>
-    <string name="CALIBRATE">calibrate</string>
+    <string name="CALIBRATE">adjust</string>
     <string name="POOR_RICH">you are either poor or rich</string>
     <string name="POOR_RICH_OCR_INIT">initializing OCR, preparing object detection...</string>
 
