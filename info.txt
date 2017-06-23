@@ -1,0 +1,11 @@
+June 23th, 2017, Albert, 17:12
+
+Android 4.3 == API 18
+
+Android 4.1.* == API 17 - here was the shit, that prevented me from installing it in Achiav's office
+
+---
+
+git log -p -1 --name-only
+
+pu
