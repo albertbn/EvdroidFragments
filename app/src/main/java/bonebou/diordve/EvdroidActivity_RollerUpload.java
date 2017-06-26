@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 
 import org.apache.http.NameValuePair;
@@ -14,9 +15,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,16 +39,17 @@ public class EvdroidActivity_RollerUpload extends Activity {
     static final String LOG_TAG = "EvdroidActivity";
     static final String UPLOAD_URL = "http://kwee.herokuapp.com/eupload";
 
-    static final String TEXT_FILE = "ocr.txt"; /*prefix of the high resolution photo/picture taken*/
+    static final String TEXT_FILE = "ocr.txt";
+    final static String PHOTO_PREFIX = "smc"; /*prefix of the high resolution photo/picture taken*/
     static final String ROOT_FOLDER_PATH = Environment.getExternalStorageDirectory().getAbsolutePath(); /* doesn't end with / */
     static final String TESS_PATH = "/tessdata/";
     static final String TEXT_FILE_PATH = ROOT_FOLDER_PATH + TESS_PATH + TEXT_FILE;
+    final static String IMG_CAPTURE_PATH = ROOT_FOLDER_PATH + "/tessdata/img/"+PHOTO_PREFIX+".jpg";
 
     private EvdroidActivity_RollerUpload self = this;
 
     public void upload_ocr_n_img ( ) {
 
-//        TODO - add img as well
         Thread thread = new Thread(new Runnable() {
 
             @Override
@@ -63,6 +67,7 @@ public class EvdroidActivity_RollerUpload extends Activity {
                 }
 
                 try {
+
                     String text = getStringFromFile ( file_copy );
                     file_copy.delete();
 
@@ -70,6 +75,9 @@ public class EvdroidActivity_RollerUpload extends Activity {
 
                     self.post_text ( text, id_inv );
 
+                    // ---
+                    // 26 June 2017, Albert - add the image - it wasn't there
+                    self.post_img ( self.get_bytes ( IMG_CAPTURE_PATH ), id_inv );
 
                 } catch ( Exception ex ) {
 
@@ -80,9 +88,32 @@ public class EvdroidActivity_RollerUpload extends Activity {
 
         thread.start();
     }
-    /**
-     * post text, used code from the NFC...
-     */
+
+    // 26 June 2017, Albert - add the image - it wasn't there
+    private void post_img ( byte [] byte_arr, String id_inv ) {
+
+        Log.i ( LOG_TAG, "about to post :: " +  byte_arr.length );
+
+        String image_str = Base64.encodeToString(byte_arr, 0);
+
+        final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+        nameValuePairs.add( new BasicNameValuePair("image", image_str) );
+        nameValuePairs.add( new BasicNameValuePair("account", self.get_acc() ));
+        nameValuePairs.add( new BasicNameValuePair("id_inv", id_inv ));
+
+        try {
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(UPLOAD_URL);
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            httpclient.execute(httppost);
+        }
+        catch ( Exception ex ) {
+            Log.e ( LOG_TAG, "post_img :: " + self.err_str(ex));
+        }
+    }
+
     private void post_text ( String text, String id_inv ) {
 
         try {
@@ -103,6 +134,25 @@ public class EvdroidActivity_RollerUpload extends Activity {
     }
 
     //========================
+
+    // https://stackoverflow.com/questions/10039672/android-how-to-read-file-in-bytes
+    private byte[] get_bytes ( String path ) throws IOException {
+
+        File file = new File(path);
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException ex) {
+            Log.e ( LOG_TAG, "ERRORE post_text :: " + self.err_str(ex));
+        } catch (IOException ex) {
+            Log.e ( LOG_TAG, "ERRORE post_text :: " + self.err_str(ex));
+        }
+
+        return bytes;
+    }
 
     private void copy_file ( File src, File dst ) throws IOException {
 
